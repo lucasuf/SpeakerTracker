@@ -21,6 +21,8 @@ if nAlgorithm == 1
     T_y = zeros(1,nEvents);                     % Wrong angle Error Rate
     T_z = zeros(1,nEvents);                     % Number of sources Error Rate
     
+    disp(sprintf (['\nUsing pMUSIC: Estimation in progress for SNR = ' num2str(SNR) ' and difference deviation = ' num2str((DifferenceDeviation*180)/pi) '°...']))
+  
     %DifferenceDrop = 2;
     for ll = 1:nEvents        
         %% --- Recalculating Music at each event ---
@@ -34,7 +36,7 @@ if nAlgorithm == 1
         
         %% --- Parameters for search
         theta_w = theta * pi;                   % Normalized value
-        %DifferenceDeviation =  pi/60;                     % Deviation is 6 degres
+        %DifferenceDeviation =  pi/30;                     % Deviation is 6 degres
         
         % --- Function to find peaks in the spectrum ---
         [x,y] = findpeaks(S_db,w,'MinPeakProminence',DifferenceDrop);
@@ -44,14 +46,14 @@ if nAlgorithm == 1
         if(size(x) == nSources)
             if((y > theta_w-DifferenceDeviation) && (y <= theta_w+DifferenceDeviation)) 
                 T_x(ll) = T_x(ll) + 1;  % Right angle and number of sources
-                disp(['Events - ' num2str(ll) ' - Right angle and number of sources Detection = ' num2str(sum(T_x)) ])
+                %disp(['Events - ' num2str(ll) ' - Right angle and number of sources Detection = ' num2str(sum(T_x)) ])
             else
                 T_y(ll) = T_y(ll) + 1;  % Right number of sources and wrong angle
-                disp(['Events - ' num2str(ll) ' - Right number of sources and wrong angle Detection = ' num2str(sum(T_y)) ])
+                %disp(['Events - ' num2str(ll) ' - Right number of sources and wrong angle Detection = ' num2str(sum(T_y)) ])
             end
         else
             T_z(ll) = T_z(ll) + 1;      % Wrong number of sources
-            disp(['Events - ' num2str(nEvents) ' - Wrong number of sources = ' num2str(sum(T_z)) ])
+            %disp(['Events - ' num2str(nEvents) ' - Wrong number of sources = ' num2str(sum(T_z)) ])
         end
     end
 end
